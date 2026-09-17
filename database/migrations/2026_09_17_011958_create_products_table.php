@@ -20,6 +20,7 @@ return new class extends Migration {
             $table->float('compare_price', 10)->nullable();
             $table->string('image')->nullable();
             $table->enum('status', ['active', 'inactive'])->default('active');
+            $table->float('rating')->default(0);
             $table->timestamps();
         });
     }
