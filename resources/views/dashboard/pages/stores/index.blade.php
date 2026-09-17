@@ -10,7 +10,7 @@
                 </div>
                 <div class="stat-content">
                     <div class="stat-number">128</div>
-                    <div class="stat-label">إجمالي الفئات</div>
+                    <div class="stat-label">إجمالي المتاجر</div>
                 </div>
             </div>
         </div>
@@ -52,7 +52,7 @@
     <form action="{{ URL::current() }}" method="get" class="row m-2 g-3 align-itmes-end m-2 mt-3">
         <div class="col-md-4">
             {{--                                                                             value="{{ request('name') }}" --}}
-            <input type="text" name="name" class="form-control" placeholder="بحث عن فئة..." value="{{ request()->query('name') }}">
+            <input type="text" name="name" class="form-control" placeholder="بحث عن متجر..." value="{{ request()->query('name') }}">
         </div>
         <div class="col-md-3">
             <select name="status" class="form-control">
@@ -75,11 +75,11 @@
         <div class="card-header">
             <h3 class="card-title">
                 <i class="fas fa-list-alt ml-2"></i>
-                قائمة الفئات
+                قائمة المتاجر
             </h3>
             <div class="card-tools">
-                <a href="{{ route('dashboard.categories.create') }}" class="btn btn-primary btn-sm">
-                    <i class="fas fa-plus ml-1"></i> إضافة فئة جديدة
+                <a href="{{ route('dashboard.stores.create') }}" class="btn btn-primary btn-sm">
+                    <i class="fas fa-plus ml-1"></i> إضافة متجر جديد
                 </a>
 
             </div>
@@ -89,7 +89,7 @@
                 <thead>
                     <tr>
                         <th>#</th>
-                        <th>اسم الفئة</th>
+                        <th>اسم المتجر</th>
                         <th>الوصف</th>
                         <th>الحالة</th>
                         <th>تاريخ التسجيل</th>
@@ -97,28 +97,29 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($categories as $category)
+                    @foreach ($stores as $store)
                         <tr>
-                            <td>{{ $category->id }}</td>
-                            <td><strong>{{ $category->name }}</strong></td>
-                            <td>{{ $category->description }}</td>
+                            <td>{{ $store->id }}</td>
+                            <td><strong>{{ $store->name }}</strong></td>
+                            <td>{{ $store->description }}</td>
                             <td>
-                                @if ($category->status === 'active')
+                                @if ($store->status === 'active')
                                     <span class="badge badge-success">نشط</span>
                                 @else
                                     <span class="badge badge-danger">غير نشط</span>
                                 @endif
-                            <td>{{ $category->created_at->format('Y-m-d') }}</td>
+                            </td>
+                            <td>{{ $store->created_at->format('Y-m-d') }}</td>
                             <td>
-                                <a href="{{ route('dashboard.categories.show', $category->id) }}"
+                                <a href="{{ route('dashboard.stores.show', $store->id) }}"
                                     class="btn btn-primary btn-action" title="عرض">
                                     <i class="fas fa-eye"></i>
                                 </a>
-                                <a href="{{ route('dashboard.categories.edit', $category->id) }}"
+                                <a href="{{ route('dashboard.stores.edit', $store->id) }}"
                                     class="btn btn-warning btn-action" title="تعديل">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <form action="{{ route('dashboard.categories.destroy',$category->id) }}" method="POST" style="display: inline-block;">
+                                <form action="{{ route('dashboard.stores.destroy',$store->id) }}" method="POST" style="display: inline-block;">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger btn-action" title="حذف">
@@ -172,7 +173,7 @@
     <script>
         document.getElementById('resetBtn').addEventListener('click', function() {
             // Reset Process across clearing the input fields and select dropdowns
-            window.location.href = "{{ route('dashboard.categories.index') }}";
+            window.location.href = "{{ route('dashboard.stores.index') }}";
         });
     </script>
 @endpush

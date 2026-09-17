@@ -3,74 +3,81 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Category;
+use Illuminate\Http\Request;
 
 class CategoriesController extends Controller
 {
     public function index()
     {
-        //Filtering and searching categories based on query parameters
-        $request=request();
-        $query=Category::query();
-        $categories = Category::all();
-        $name=$request->query('name');
-        $status=$request->query('status');
-        if($name){
-            $query->where('name','like','%'.$name.'%');
+        // Filtering and searching categories based on query parameters
+        $request = request();
+        $query = Category::query();
+        $name = $request->query('name');
+        $status = $request->query('status');
+        if ($name) {
+            $query->where('name', 'like', '%' . $name . '%');
         }
-        if($status){
-            $query->where('status',$status);
+        if ($status) {
+            $query->where('status', $status);
         }
-        return view('dashboard.pages.categories.index',[
-            'categories' => $query->get(),
+        $categories = $query->get();
+        // $categories = Category::all();
+        // The above line is commented out because we are using the filtered query instead
+        return view('dashboard.pages.categories.index', [
+            'categories' => $categories,
         ]);
     }
+
     public function create()
     {
         return view('dashboard.pages.categories.create');
     }
+
     public function store(Request $request)
     {
         // Validate the request data
-        $request -> validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'status' => 'required|in:active,inactive',
+        $request->validate([
+            'name' => ['required', 'string', 'max:255', 'unique:categories,name,except:id'],
+            'description' => ['nullable', 'string'],
+            'status' => ['required', 'in:active,inactive'],
         ]);
 
         // Create a new category using the validated data
         Category::create($request->all());
-        return redirect()->route('dashboard.categories.index')->with('success', 'Category created successfully.');
+        return redirect()->route('dashboard.categories.index')->with('success', 'تم إضافة الفئة بنجاح.');
     }
-    public function show($id)
+
+    public function show(Category $category)
     {
-        $category = Category::findOrFail($id);
+        // $category = Category::findOrFail($id);
         return view('dashboard.pages.categories.show', compact('category'));
     }
-    public function edit($id)
+
+    public function edit(Category $category)
     {
-        $category = Category::findOrFail($id);
+        // $category = Category::findOrFail($id);
         return view('dashboard.pages.categories.edit', compact('category'));
     }
-    public function update(Request $request, $id)
+
+    public function update(Request $request, Category $category) // (Route model binding) can be used here instead of $id
     {
         // Validate the request data
         $request->validate([
-            'name' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'status' => 'required|in:active,inactive',
+            'name' => ['required', 'string', 'max:255', 'unique:categories,name,except:id'],
+            'description' => ['nullable', 'string'],
+            'status' => ['required', 'in:active,inactive'],
         ]);
 
-        // Find the category by ID and update it with the validated data
-        $category = Category::findOrFail($id);
+        // $category = Category::findOrFail($id);
         $category->update($request->all());
-        return redirect()->route('dashboard.categories.index')->with('success', 'Category updated successfully.');
+        return redirect()->route('dashboard.categories.index')->with('success', 'تم تحديث الفئة بنجاح.');
     }
-    public function destroy($id)
+
+    public function destroy(Category $category) // (Route model binding) can be used here instead of $id
     {
-        $category = Category::findOrFail($id);
+        // $category = Category::findOrFail($id);
         $category->delete();
-        return redirect()->route('dashboard.categories.index')->with('success', 'Category deleted successfully.');
+        return redirect()->route('dashboard.categories.index')->with('success', 'تم حذف الفئة بنجاح.');
     }
 }

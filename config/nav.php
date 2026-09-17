@@ -12,4 +12,9 @@ return [
         'icon' => 'nav-icon fas fa-list',
         'route' => 'dashboard.categories.index',
     ],
+    [
+        'title' => 'المتاجر',
+        'icon' => 'nav-icon fas fa-store',
+        'route' => 'dashboard.stores.index',
+    ],
 ];

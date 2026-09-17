@@ -14,14 +14,15 @@
         <div class="card-header">
             <h3 class="card-title">
                 <i class="fas fa-plus ml-2"></i>
-                إضافة فئة جديدة
+                تعديل المتجر
             </h3>
         </div>
         <div class="card-body">
-            <form action="{{ route('dashboard.categories.store') }}" method="POST">
+            <form action="{{ route('dashboard.stores.update', $store->id) }}" method="POST">
                 @csrf
-                @include('dashboard.pages.categories._form')
-                <button type="submit" class="btn btn-primary">حفظ الفئة</button>
+                @method('PUT')
+                @include('dashboard.pages.stores._form')
+                <button type="submit" class="btn btn-primary">حفظ المتجر</button>
             </form>
         </div>
     </div>

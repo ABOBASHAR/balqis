@@ -13,7 +13,7 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">
-                <i class="fas fa-plus ml-2"></i>
+                <i class="fas fa-edit ml-2"></i>
                 تعديل فئة
             </h3>
         </div>
@@ -22,7 +22,7 @@
                 @csrf
                 @method('PUT')
                 @include('dashboard.pages.categories._form')
-                <button type="submit" class="btn btn-primary">حفظ</button>
+                <button type="submit" class="btn btn-primary">حفظ الفئة</button>
             </form>
         </div>
     </div>
