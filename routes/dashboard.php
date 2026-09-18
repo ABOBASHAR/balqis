@@ -4,12 +4,13 @@ use App\Http\Controllers\Dashboard\CategoriesController;
 use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Dashboard\StoreController;
 use App\Http\Controllers\Dashboard\ProductsController;
+use App\Http\Controllers\Dashboard\TwoFactorAuthenticatableController;
 use Illuminate\Support\Facades\Route;
 
 Route::group([
     'prefix' => '/admin/dashboard',
     'as' => 'dashboard.',
-    'middleware' => ['auth']
+    'middleware' => ['auth:admin']
 ], function () {
     Route::get('/index', [DashboardController::class, 'index'])->name('index');
     //Categories Controller
@@ -26,4 +27,7 @@ Route::group([
     Route::resource('stores',StoreController::class);
     //Products Controller
     Route::resource('products', ProductsController::class);
+
+    Route::get('/2fa',[TwoFactorAuthenticatableController::class,'index'])
+    ->name('admin.2fa');
 });

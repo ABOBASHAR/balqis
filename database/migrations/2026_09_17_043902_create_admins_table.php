@@ -19,6 +19,9 @@ return new class extends Migration
             $table->string('password');
             $table->enum('status', ['active', 'inactive'])->default('active');
             $table->boolean('super_admin')->default(false);
+            $table->text('two_factor_secret')->nullable();
+            $table->text('two_factor_recovery_codes')->nullable();
+            $table->text('two_factor_confirmed_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

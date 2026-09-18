@@ -21,4 +21,9 @@ return [
         'icon' => 'nav-icon fas fa-box',
         'route' => 'dashboard.products.index',
     ],
+    [
+        'title' => 'التحقق بخطوتين',
+        'icon' => 'nav-icon fas fa-lock',
+        'route' => 'dashboard.admin.2fa',
+    ],
 ];
