@@ -21,7 +21,7 @@ class CategoriesController extends Controller
         if ($status) {
             $query->where('status', $status);
         }
-        $categories = $query->get();
+        $categories = $query->withCount('products')->get();
         // $categories = Category::all();
         // The above line is commented out because we are using the filtered query instead
         return view('dashboard.pages.categories.index', [
@@ -60,7 +60,7 @@ class CategoriesController extends Controller
         return view('dashboard.pages.categories.edit', compact('category'));
     }
 
-    public function update(Request $request, Category $category) // (Route model binding) can be used here instead of $id
+    public function update(Request $request, Category $category)
     {
         // Validate the request data
         $request->validate([
@@ -68,16 +68,24 @@ class CategoriesController extends Controller
             'description' => ['nullable', 'string'],
             'status' => ['required', 'in:active,inactive'],
         ]);
-
-        // $category = Category::findOrFail($id);
         $category->update($request->all());
         return redirect()->route('dashboard.categories.index')->with('success', 'تم تحديث الفئة بنجاح.');
     }
 
-    public function destroy(Category $category) // (Route model binding) can be used here instead of $id
+    public function destroy(Category $category)  // (Route model binding) can be used here instead of $id
     {
         // $category = Category::findOrFail($id);
         $category->delete();
         return redirect()->route('dashboard.categories.index')->with('success', 'تم حذف الفئة بنجاح.');
+    }
+
+    public function showProducts(Category $category)
+    {
+        // Get the products associated with the category
+        $products = $category->products()->with('store')->paginate(10);  // Paginate the products, 10 per page
+        return view('dashboard.pages.categories.products', [
+            'category' => $category,
+            'products' => $products,
+        ]);
     }
 }

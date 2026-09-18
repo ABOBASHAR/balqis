@@ -19,8 +19,8 @@
     label="حالة الفئة"
     name="status"
     :options="[
-        'active' => 'Active',
-        'inactive' => 'Inactive'
+        'active' => 'نشط',
+        'inactive' => 'غير نشط'
         ]"
     :selected="$category->status??'active'"
     />

@@ -13,7 +13,7 @@
         @foreach ($options as $value => $text)
             <option value="{{ $value }}" 
             {{ $value == old($name, $selected) ? 'selected' : '' }}
-            {{-- this (line 15) or that (line 17 --> 19</option>) --}}
+            {{-- this (line 15) or that (line 17 --> 19</option>) both correct --}}
             {{-- @if ($value == old($name, $selected))
                 selected
             @endif --}}

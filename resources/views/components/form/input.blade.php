@@ -11,7 +11,7 @@
     class="form-control @error($name) is-invalid @enderror"
     placeholder="{{ $placeholder }}" value="{{ old($name, $value) }}">
 @error($name)
-    <div class="alert alert-danger mt-2">
+    <div class="text-danger mt-2">
         {{ $message }}
     </div>
 @enderror

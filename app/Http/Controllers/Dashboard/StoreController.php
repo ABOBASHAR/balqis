@@ -47,9 +47,8 @@ class StoreController extends Controller
         Store::create($request->all());
         return redirect()->route('dashboard.stores.index')->with('success', 'تم إنشاء المتجر بنجاح.');
     }
-    public function show($id)
+    public function show(Store $store) // (Route model binding) can be used here instead of $id
     {
-        $store = Store::findOrFail($id);
         return view('dashboard.pages.stores.show', compact('store'));
     }
     public function edit(Store $store)

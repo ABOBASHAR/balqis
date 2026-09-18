@@ -19,7 +19,7 @@
 </div>
 <div class="form-group">
     <x-form.select label="حالة المتجر" name="status" :options="[
-        'active' => 'Active',
-        'inactive' => 'Inactive',
+        'active' => 'نشط',
+        'inactive' => 'غير نشط',
     ]" :selected="$store->status ?? 'active'" />
 </div>

@@ -10,7 +10,7 @@
                 </div>
                 <div class="stat-content">
                     <div class="stat-number">128</div>
-                    <div class="stat-label">إجمالي الفئات</div>
+                    <div class="stat-label">إجمالي المنتجات</div>
                 </div>
             </div>
         </div>
@@ -51,15 +51,28 @@
     <x-flash-message />
     <form action="{{ URL::current() }}" method="get" class="row m-2 g-3 align-itmes-end m-2 mt-3">
         <div class="col-md-4">
-            {{--                                                                             value="{{ request('name') }}" --}}
-            <input type="text" name="name" class="form-control" placeholder="بحث عن فئة..." value="{{ request()->query('name') }}">
+            <x-form.input id="name" name="name" label="الاسم" placeholder="بحث عن منتج..."
+            {{--value="{{ request('name') }}"    --}}
+                value="{{ request()->query('name') }}" />
         </div>
-        <div class="col-md-3">
-            <select name="status" class="form-control">
-                <option value="">الكل</option>
-                <option value="active" {{ request()->query('status') === 'active' ? 'selected' : '' }}>نشط</option>
-                <option value="inactive" {{ request()->query('status') === 'inactive' ? 'selected' : '' }}>غير نشط</option>
-            </select>
+        <div class="col-md-2">
+            <x-form.select label="الحالة" name="status" class="form-control"
+            :options="[
+                '' => 'الكل',
+                'active' => 'نشط',
+                'inactive' => 'غير نشط',
+            ]" 
+            :selected="request()->query('status')" />
+        </div>
+        <div class="col-md-2">
+            <x-form.select label="الفئة" class="col-md-2" name="category_id" 
+            :options="$categories->prepend('كل الفئات', '')"
+            :selected="request()->query('category_id','')" />
+        </div>
+        <div class="col-md-2">
+            <x-form.select label="المتجر" name="store_id" 
+            :options="$stores->prepend('كل المتاجر', '')" 
+            :selected="request()->query('store_id','')" />
         </div>
         <div class="col-md-4">
             <button type="submit" class="btn btn-primary">بحث
@@ -75,11 +88,11 @@
         <div class="card-header">
             <h3 class="card-title">
                 <i class="fas fa-list-alt ml-2"></i>
-                قائمة الفئات
+                قائمة المنتجات
             </h3>
             <div class="card-tools">
-                <a href="{{ route('dashboard.categories.create') }}" class="btn btn-primary btn-sm">
-                    <i class="fas fa-plus ml-1"></i> إضافة فئة جديدة
+                <a href="{{ route('dashboard.products.create') }}" class="btn btn-primary btn-sm">
+                    <i class="fas fa-plus ml-1"></i> إضافة منتج جديد
                 </a>
 
             </div>
@@ -89,43 +102,44 @@
                 <thead>
                     <tr>
                         <th>#</th>
+                        <th>اسم المنتج</th>
                         <th>اسم الفئة</th>
+                        <th>اسم المتجر</th>
                         <th>الوصف</th>
-                        <th>عدد المنتجات</th>
                         <th>الحالة</th>
+                        <th>السعر</th>
                         <th>تاريخ التسجيل</th>
                         <th>الإجراءات</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($categories as $category)
+                    @foreach ($products as $product)
                         <tr>
-                            <td>{{ $category->id }}</td>
-                            <td><strong>{{ $category->name }}</strong></td>
-                            <td>{{ $category->description }}</td>
-                            <td>{{ $category->products_count }}</td>
+                            <td>{{ $product->id }}</td>
+                            <td><strong>{{ $product->name }}</strong></td>
+                            <td>{{ $product->category->name }}</td>
+                            <td>{{ $product->store->name }}</td>
+                            <td>{{ $product->description }}</td>
                             <td>
-                                @if ($category->status === 'active')
+                                @if ($product->status === 'active')
                                     <span class="badge badge-success">نشط</span>
                                 @else
                                     <span class="badge badge-danger">غير نشط</span>
                                 @endif
-                            <td>{{ $category->created_at->format('Y-m-d') }}</td>
+                            </td>
+                            <td>{{ $product->price }}</td>
+                            <td>{{ $product->created_at->format('Y-m-d') }}</td>
                             <td>
-                                <a href="{{ route('dashboard.categories.show', $category->id) }}"
+                                <a href="{{ route('dashboard.products.show', $product->id) }}"
                                     class="btn btn-primary btn-action" title="عرض">
                                     <i class="fas fa-eye"></i>
                                 </a>
-                                <a href="{{ route('dashboard.categories.edit', $category->id) }}"
+                                <a href="{{ route('dashboard.products.edit', $product->id) }}"
                                     class="btn btn-warning btn-action" title="تعديل">
                                     <i class="fas fa-edit"></i>
                                 </a>
-                                <a href="{{ route('dashboard.categories.products', $category->id) }}"
-                                    class="btn btn-info btn-action"
-                                    title="عرض المنتجات">
-                                    <i class="fas fa-boxes"></i>
-                                </a>
-                                <form action="{{ route('dashboard.categories.destroy',$category->id) }}" method="POST" style="display: inline-block;">
+                                <form action="{{ route('dashboard.products.destroy', $product->id) }}" method="POST"
+                                    style="display: inline-block;">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger btn-action" title="حذف">
@@ -179,7 +193,7 @@
     <script>
         document.getElementById('resetBtn').addEventListener('click', function() {
             // Reset Process across clearing the input fields and select dropdowns
-            window.location.href = "{{ route('dashboard.categories.index') }}";
+            window.location.href = "{{ route('dashboard.products.index') }}";
         });
     </script>
 @endpush
