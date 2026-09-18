@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
-
+use Illuminate\Validation\Rule;
 class CategoriesController extends Controller
 {
     public function index()
@@ -64,7 +64,7 @@ class CategoriesController extends Controller
     {
         // Validate the request data
         $request->validate([
-            'name' => ['required', 'string', 'max:255', 'unique:categories,name,except:id'],
+            'name' => ['required', 'string', 'max:255', Rule::unique('categories', 'name')->ignore($category->id)],
             'description' => ['nullable', 'string'],
             'status' => ['required', 'in:active,inactive'],
         ]);

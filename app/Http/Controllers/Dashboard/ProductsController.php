@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\Store;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class ProductsController extends Controller
 {
@@ -53,7 +54,7 @@ class ProductsController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:255','unique:products,name,except:id'],
+            'name' => ['required', 'string', 'max:255', 'unique:products,name'],
             'description' => ['nullable', 'string'],
             'price' => ['nullable', 'numeric', 'min:0'],
             'category_id' => ['required', 'exists:categories,id'],
@@ -76,7 +77,7 @@ class ProductsController extends Controller
     public function update(Request $request, Product $product)
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255', Rule::unique('products', 'name')->ignore($product->id)],
             'description' => ['required', 'string'],
             'price' => ['nullable', 'numeric', 'min:0'],
             'category_id' => ['required', 'exists:categories,id'],

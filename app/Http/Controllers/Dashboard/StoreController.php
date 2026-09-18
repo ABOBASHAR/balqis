@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use App\Models\Store;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class StoreController extends Controller
 {
@@ -58,7 +59,7 @@ class StoreController extends Controller
     public function update(Request $request, Store $store) // (Route model binding) can be used here instead of $id
     {
         $request->validate([
-            'name' => ['required', 'string', 'max:100','unique:stores,name,except:id'],
+            'name' => ['required', 'string', 'max:100',Rule::unique('stores','name')->ignore($store->id)],
             'description' => ['nullable', 'string', 'max:255','min:5'],
             'status' => ['required', 'in:active,inactive'],
         ]);
