@@ -1,22 +1,24 @@
 @extends('layouts.dashboard.index')
 
+@section('title','الموارد البشرية - تفاصيل القسم')
+
 @section('content')
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">
                 <i class="fas fa-list-alt ml-2"></i>
-                تفاصيل المتجر
+                تفاصيل القسم
             </h3>
         </div>
         <div class="card-body">
             <table class="table table-bordered">
                 <tr>
-                    <th>اسم المتجر</th>
-                    <td>{{ $store->name }}</td>
+                    <th>اسم القسم</th>
+                    <td>{{ $department->name }}</td>
                 </tr>
                 <tr>
-                    <th>وصف المتجر</th>
-                    <td>{{ $store->description }}</td>
+                    <th>وصف القسم</th>
+                    <td>{{ $department->description }}</td>
                 </tr>
             </table>
         </div>

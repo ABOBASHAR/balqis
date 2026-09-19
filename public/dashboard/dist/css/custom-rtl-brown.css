@@ -96,6 +96,20 @@ body.hold-transition {
   border-color: #4a3020 !important;
 }
 
+.btn-outline-primary {
+  color: var(--brown) !important;
+  background-color: transparent !important;
+  border-color: var(--brown) !important;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:focus,
+.btn-outline-primary:active {
+  color: #fff !important;
+  background-color: var(--brown) !important;
+  border-color: var(--brown) !important;
+}
+
 .bg-primary {
   background-color: var(--brown-transparent) !important;
 }
@@ -148,6 +162,10 @@ a:hover,
 }
 .form-control{
   padding: 0 7px;
+}
+
+input[type=date].form-control {
+  text-align: right;
 }
 .form-control-sidebar,
 .form-control-navbar {

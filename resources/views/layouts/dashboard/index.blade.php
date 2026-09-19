@@ -172,7 +172,7 @@
             <div class="sidebar">
                 <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                     <div class="image">
-                        <img src="{{ asset('dashboard/dist/img/muhammed.png') }}" class="img-circle elevation-2"
+                        <img src="{{ asset('dashboard/dist/img/me1.jpg') }}" class="img-circle elevation-2"
                             alt="صورة المستخدم">
                     </div>
                     <div class="info">

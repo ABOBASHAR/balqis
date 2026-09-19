@@ -4,15 +4,15 @@
 <!-- رسالة ترحيب -->
     <div class="welcome-banner">
         <div class="welcome-content">
-            <img src="{{asset('dashboard/dist/img/muhammed.png')}}" alt="محمد البدران" class="welcome-avatar">
+            <img src="{{asset('dashboard/dist/img/me1.jpg')}}" alt="محمد البدران" class="welcome-avatar">
             <div class="welcome-text">
                 <h2>مرحباً،  {{ Auth::user()->name }} 👋</h2>
                 <p>نتمنى لك يوماً مثمراً — إليك نظرة سريعة على لوحة التحكم الخاصة بك</p>
             </div>
         </div>
         <div class="welcome-meta">
-            <span class="welcome-meta-item"><i class="far fa-calendar-alt"></i> الأربعاء، 1 يوليو 2026</span>
-            <span class="welcome-meta-item"><i class="far fa-clock"></i> 09:30 صباحاً</span>
+            <span class="welcome-meta-item"><i class="far fa-calendar-alt"></i> {{ now()->locale('ar')->translatedFormat('l، j F Y') }}</span>
+            <span class="welcome-meta-item"><i class="far fa-clock"></i> {{ now()->format('h:i') }} {{ now()->hour < 12 ? 'صباحاً' : 'مساءً' }}</span>
         </div>
     </div>
 

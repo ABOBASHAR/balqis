@@ -1,16 +1,16 @@
 <div class="form-group">
-    <x-form.input id="name" name="name" label="اسم المتجر" placeholder="أدخل اسم المتجر"
-        value="{{ $store->name ?? old('name') }}" />
+    <x-form.input id="name" name="name" label="اسم القسم" placeholder="أدخل اسم القسم"
+        value="{{ $department->name ?? old('name') }}" />
 </div>
 <div class="form-group">
-    <label for="description">وصف المتجر</label>
+    <label for="description">وصف القسم</label>
     <textarea name="description" id="description"
         class="form-control 
     @error('description')
         is-invalid
     @enderror
     " rows="4"
-        placeholder="أدخل وصف المتجر">{{ $store->description ?? old('description') }}</textarea>
+        placeholder="أدخل وصف القسم">{{ $department->description ?? old('description') }}</textarea>
     @error('description')
         <div class="text-danger mt-2">
             {{ $message }}
@@ -18,8 +18,8 @@
     @enderror
 </div>
 <div class="form-group">
-    <x-form.select label="حالة المتجر" name="status" :options="[
+    <x-form.select label="حالة القسم" name="status" :options="[
         'active' => 'نشط',
         'inactive' => 'غير نشط',
-    ]" :selected="$store->status ?? 'active'" />
+    ]" :selected="$department->status ?? 'active'" />
 </div>

@@ -10,8 +10,18 @@ class HrDepartmentsController extends Controller
 {
     public function index()
     {
+        $request = request();
+        $query = HrDepartment::query();
+        $name = $request->query('name');
+        $status = $request->query('status');
+        if ($name) {
+            $query->where('name', 'like', "%$name%");
+        }
+        if ($status) {
+            $query->where('status', $status);
+        }
         return view('dashboard.pages.hr.departments.index', [
-            'departments' => HrDepartment::all(),
+            'departments' => $query->get(),
         ]);
     }
 
@@ -37,6 +47,10 @@ class HrDepartmentsController extends Controller
         return redirect()->route('dashboard.hr.departments.index')->with('success', 'تم إنشاء القسم بنجاح');
     }
 
+    public function show(HrDepartment $department)
+    {
+        return view('dashboard.pages.hr.departments.show', compact('department'));
+    }
     public function edit(HrDepartment $department)
     {
         return view('dashboard.pages.hr.departments.edit', [

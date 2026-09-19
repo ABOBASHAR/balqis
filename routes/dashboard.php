@@ -8,6 +8,7 @@ use App\Http\Controllers\Dashboard\ProductsController;
 use App\Http\Controllers\Dashboard\StoreController;
 use App\Http\Controllers\Dashboard\TwoFactorAuthenticatableController;
 use Illuminate\Support\Facades\Route;
+use \App\Http\Controllers\Dashboard\HrEmployeesController;
 
 Route::group([
     'prefix' => '/admin/dashboard',
@@ -37,5 +38,6 @@ Route::group([
         //  /admin/dashboard/hr/
         Route::get('/', [HrController::class, 'index'])->name('index');
         Route::resource('departments', HrDepartmentsController::class);
+        Route::resource('employees', HrEmployeesController::class);
     });
 });
