@@ -11,7 +11,11 @@
         value="{{ $employee->phone ?? old('phone') }}" />
 </div>
 <div class="form-group">
-    <x-form.select label="القسم" name="department_id" :options="$departments" :selected="$employee->department_id ?? null" />
+    <x-form.select label="القسم" name="department_id" :options="$departments" :disabled="$departmentStatuses->map(fn ($status) => $status === 'inactive')->all()"
+        :selected="$employee->department_id ?? null" />
+    @if ($departmentStatuses->contains('inactive'))
+        <small class="form-text text-danger "><i class="fas fa-exclamation-triangle"></i> الأقسام غير النشطة غير متاحة للاختيار.</small>
+    @endif
 </div>
 <div class="form-group">
     <x-form.input id="job_title" name="job_title" label="عنوان الوظيفة" placeholder="أدخل عنوان الوظيفة"
@@ -19,9 +23,9 @@
 </div>
 <div class="form-group">
     <x-form.input id="hire_date" name="hire_date" label="تاريخ التوظيف" placeholder="أدخل تاريخ التوظيف"
-        value="{{ $employee->hire_date?->format('Y-m-d') ?? old('hire_date') }}" type="date"  />
-    {{--value="{{ old('hire_date', $employee->getRawOriginal('hire_date')) }}" --}}
-    </div>
+        value="{{ $employee->hire_date?->format('Y-m-d') ?? old('hire_date') }}" type="date" />
+    {{-- value="{{ old('hire_date', $employee->getRawOriginal('hire_date')) }}" --}}
+</div>
 <div class="form-group">
     <x-form.input id="salary" name="salary" label="الراتب" placeholder="أدخل الراتب"
         value="{{ $employee->salary ?? old('salary') }}" type="number" />

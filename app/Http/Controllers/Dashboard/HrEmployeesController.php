@@ -3,17 +3,31 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\HrDepartment;
 use App\Models\HrEmployee;
 use Illuminate\Http\Request;
-use App\Models\HrDepartment;
 
 class HrEmployeesController extends Controller
 {
     public function index()
     {
-
+        $request = request();
+        $query = HrEmployee::query();
+        $name = $request->query('name');
+        $departmentId = $request->query('department_id');
+        $status = $request->query('status');
+        if ($name) {
+            $query->where('name', 'like', "%$name%");
+        }
+        if ($departmentId) {
+            $query->where('department_id', $departmentId);
+        }
+        if ($status) {
+            $query->where('status', $status);
+        }
         return view('dashboard.pages.hr.employees.index', [
-            'employees' => HrEmployee::all(),
+            'employees' => $query->with('department')->get(),
+            'departments' => $this->departmentOptions(),
         ]);
     }
 
@@ -21,21 +35,36 @@ class HrEmployeesController extends Controller
     {
         return HrDepartment::pluck('name', 'id');
     }
+
+    protected function departmentStatuses()
+    {
+        return HrDepartment::pluck('status', 'id');
+    }
+
     public function create()
     {
         return view('dashboard.pages.hr.employees.create', [
             'employee' => new HrEmployee,
             'departments' => $this->departmentOptions(),
+            'departmentStatuses' => $this->departmentStatuses(),
         ]);
     }
 
-    protected function validated(Request $request , HrEmployee $employee)
+    protected function validated(Request $request, HrEmployee $employee)
     {
         return $request->validate([
             'name' => ['required', 'string', 'max:50', 'min:3'],
             'email' => ['required', 'email', 'unique:hr_employees,email,' . $employee->id],
             'phone' => ['nullable', 'numeric', 'max_digits:10'],
-            'department_id' => ['nullable', 'exists:hr_departments,id'],
+            'department_id' => [
+                'nullable',
+                'exists:hr_departments,id',
+                function ($attribute, $value, $fail) {
+                    if ($value && HrDepartment::whereKey($value)->where('status', 'active')->doesntExist()) {
+                        $fail('لا يمكن اختيار قسم غير نشط.');
+                    }
+                },
+            ],
             'job_title' => ['nullable', 'string', 'max:50', 'min:3'],
             'hire_date' => ['nullable', 'date'],
             'salary' => ['nullable', 'numeric', 'min:0'],
@@ -53,17 +82,21 @@ class HrEmployeesController extends Controller
 
         return redirect()->route('dashboard.hr.employees.index')->with('success', 'تم إنشاء الموظف بنجاح');
     }
+
     public function show(HrEmployee $employee)
     {
         return view('dashboard.pages.hr.employees.show', compact('employee'));
     }
+
     public function edit(HrEmployee $employee)
     {
         return view('dashboard.pages.hr.employees.edit', [
             'employee' => $employee,
             'departments' => $this->departmentOptions(),
+            'departmentStatuses' => $this->departmentStatuses(),
         ]);
     }
+
     public function update(Request $request, HrEmployee $employee)
     {
         $validatedData = $this->validated($request, $employee);
@@ -72,6 +105,7 @@ class HrEmployeesController extends Controller
 
         return redirect()->route('dashboard.hr.employees.index')->with('success', 'تم تحديث الموظف بنجاح');
     }
+
     public function destroy(HrEmployee $employee)
     {
         $employee->delete();

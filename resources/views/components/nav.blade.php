@@ -3,7 +3,7 @@
             @foreach ($items as $item)
                 
             <li class="nav-item">
-                <a href="{{ route($item['route']) }}" class="nav-link {{ request()->routeIS($item['route'])? 'active' : '' }}">
+                <a href="{{ route($item['route']) }}" class="nav-link {{ request()->routeIs($item['active_route'] ?? $item['route']) ? 'active' : '' }}">
                     <i class="{{ $item['icon'] }}"></i>
                     <p>{{ $item['title'] }}</p>
                 </a>

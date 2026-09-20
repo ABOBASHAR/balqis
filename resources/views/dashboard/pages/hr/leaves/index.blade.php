@@ -1,5 +1,6 @@
 @php
     $statusLabels = [
+        '' => 'الكل',
         'pending' => 'قيد الانتظار',
         'approved' => 'تمت الموافقة',
         'rejected' => 'تم رفضها',
@@ -10,6 +11,7 @@
         'rejected' => 'badge-danger',
     ];
     $LeaveTypeLabels = [
+        '' => 'الكل',
         'annual' => 'إجازة سنوية',
         'sick' => 'إجازة مرضية',
         'unpaid' => 'إجازة غير مدفوعة',
@@ -25,16 +27,19 @@
     <x-flash-message />
     @include('dashboard.pages.hr._menu', ['current' => 'leaves'])
     <form action="{{ URL::current() }}" method="get" class="row m-2 g-3 align-itmes-end m-2 mt-3">
-        <div class="col-md-4">
-            <input type="text" name="name" class="form-control" placeholder="بحث عن موظف..."
-                value="{{ request()->query('name') }}">
+        <div class="col-md-3">
+            <x-form.select name="employee_id" label="اسم الموظف" :options="$employees->prepend('الكل', '')" class="form-control" placeholder="" :value="request()->query('employee_id')"
+                :selected="request()->query('employee_id')" />
         </div>
         <div class="col-md-3">
-            <select name="status" class="form-control">
-                <option value="">الكل</option>
-                <option value="active" {{ request()->query('status') === 'active' ? 'selected' : '' }}>نشط</option>
-                <option value="inactive" {{ request()->query('status') === 'inactive' ? 'selected' : '' }}>غير نشط</option>
-            </select>
+            <x-form.select name="type" label="نوع الإجازة" class="form-control" :options="$LeaveTypeLabels"
+            :value="request()->query('type')" 
+            :selected="request()->query('type')" />
+        </div>
+        <div class="col-md-3">
+            <x-form.select name="status" label="حالة الإجازة" class="form-control" :options="$statusLabels"
+            :value="request()->query('status')" 
+            :selected="request()->query('status')" />
         </div>
         <div class="col-md-4">
             <button type="submit" class="btn btn-primary">بحث
@@ -60,7 +65,7 @@
             </div>
         </div>
         <div class="card-body">
-            <div class="table-responsive">
+
                 <table id="usersTable" class="table table-bordered table-striped table-hover table-brown"
                     style="width: max-content; min-width: 100%; white-space: nowrap;">
                     <thead>
@@ -131,7 +136,7 @@
                         @endforeach
                     </tbody>
                 </table>
-            </div>
+            
         </div>
     </div>
 @endsection
@@ -168,7 +173,7 @@
     <script>
         document.getElementById('resetBtn').addEventListener('click', function() {
             // Reset Process across clearing the input fields and select dropdowns
-            window.location.href = "{{ route('dashboard.hr.departments.index') }}";
+            window.location.href = "{{ route('dashboard.hr.leaves.index') }}";
         });
     </script>
 @endpush

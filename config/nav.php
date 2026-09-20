@@ -30,5 +30,6 @@ return [
         'title' => 'الموارد البشرية',
         'icon' => 'nav-icon fas fa-users',
         'route' => 'dashboard.hr.index',
+        'active_route' => 'dashboard.hr.*',
     ],
 ];

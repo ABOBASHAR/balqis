@@ -11,9 +11,23 @@ class HrLeaveRequestController extends Controller
 {
     public function index()
     {
-        // we will filter here (:
+        $request = request();
+        $query = HrLeaveRequest::query();
+        $employeeId = $request->query('employee_id');
+        $type = $request->query('type');
+        $status = $request->query('status');
+        if ($employeeId) {
+            $query->where('employee_id', $employeeId);
+        }
+        if ($type) {
+            $query->where('type', $type);
+        }
+        if ($status) {
+            $query->where('status', $status);
+        }
         return view('dashboard.pages.hr.leaves.index', [
-            'leaves' => HrLeaveRequest::all(),
+            'leaves' => $query->with('employee')->get(),
+            'employees' => $this->employeeOptions(),
         ]);
     }
 

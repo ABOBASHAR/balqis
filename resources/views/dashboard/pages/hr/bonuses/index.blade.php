@@ -1,5 +1,6 @@
 @php
     $bonusTypeLabels = [
+        '' => 'الكل',
         'performance' => 'مكافأة أداء',
         'overtime' => 'مكافأة ساعات إضافية',
         'holiday' => 'مكافأة عطلة',
@@ -16,16 +17,16 @@
     <x-flash-message />
     @include('dashboard.pages.hr._menu', ['current' => 'bonuses'])
     <form action="{{ URL::current() }}" method="get" class="row m-2 g-3 align-itmes-end m-2 mt-3">
-        <div class="col-md-4">
-            <input type="text" name="name" class="form-control" placeholder="بحث عن موظف..."
-                value="{{ request()->query('name') }}">
+        <div class="col-md-3">
+            <x-form.select name="employee_id" label="اسم الموظف" class="form-control" placeholder="" :options="$employees->prepend('الكل', '')"
+                :selected="request()->query('employee_id')" />
         </div>
         <div class="col-md-3">
-            <select name="status" class="form-control">
-                <option value="">الكل</option>
-                <option value="active" {{ request()->query('status') === 'active' ? 'selected' : '' }}>نشط</option>
-                <option value="inactive" {{ request()->query('status') === 'inactive' ? 'selected' : '' }}>غير نشط</option>
-            </select>
+            <x-form.select name="type" label="نوع المكافأة" class="form-control" :options="$bonusTypeLabels" :value="request()->query('type')"
+                :selected="request()->query('type')" />
+        </div>
+        <div class="col-md-3">
+            <x-form.input name="amount" label="المبلغ $" class="form-control" :value="request()->query('amount')" type="number" />
         </div>
         <div class="col-md-4">
             <button type="submit" class="btn btn-primary">بحث
@@ -51,55 +52,55 @@
             </div>
         </div>
         <div class="card-body">
-            <div class="table-responsive">
-                <table id="usersTable" class="table table-bordered table-striped table-hover table-brown"
-                    style="width: max-content; min-width: 100%; white-space: nowrap;">
-                    <thead>
+            <table id="usersTable" class="table table-bordered table-striped table-hover table-brown"
+                style="width: max-content; min-width: 100%; white-space: nowrap;">
+                <thead>
+                    <tr>
+                        <th class="col-id">#</th>
+                        <th>اسم الموظف</th>
+                        <th>عنوان المكافأة</th>
+                        <th>نوع المكافأة</th>
+                        <th>المبلغ</th>
+                        <th>تاريخ المكافأة</th>
+                        <th>تاريخ الطلب</th>
+                        <th>ملاحظات</th>
+                        <th>الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($bonuses as $bonus)
                         <tr>
-                            <th class="col-id">#</th>
-                            <th>اسم الموظف</th>
-                            <th>نوع المكافأة</th>
-                            <th>المبلغ</th>
-                            <th>تاريخ المكافأة</th>
-                            <th>تاريخ الطلب</th>
-                            <th>ملاحظات</th>
-                            <th>الإجراءات</th>
+                            <td>{{ $bonus->id }}</td>
+                            <td><strong>{{ $bonus->employee->name }}</strong></td>
+                            <td>{{ $bonus->title }}</td>
+                            <td>{{ $bonusTypeLabels[$bonus->type] ?? $bonus->type }}</td>
+                            <td>{{ $bonus->amount }}</td>
+                            <td>{{ $bonus->date }}</td>
+                            <td>{{ $bonus->created_at }}</td>
+                            <td>{{ $bonus->notes }}</td>
+                            <td>
+                                <a href="{{ route('dashboard.hr.bonuses.show', $bonus->id) }}"
+                                    class="btn btn-primary btn-action" title="عرض">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                <a href="{{ route('dashboard.hr.bonuses.edit', $bonus->id) }}"
+                                    class="btn btn-warning btn-action" title="تعديل">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <form action="{{ route('dashboard.hr.bonuses.destroy', $bonus->id) }}" method="POST"
+                                    style="display: inline-block;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-action" title="حذف">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
                         </tr>
+                    @endforeach
+                </tbody>
+            </table>
 
-                    </thead>
-                    <tbody>
-                        @foreach ($bonuses as $bonus)
-                            <tr>
-                                <td>{{ $bonus->id }}</td>
-                                <td><strong>{{ $bonus->employee->name }}</strong></td>
-                                <td>{{ $bonusTypeLabels[$bonus->type] ?? $bonus->type }}</td>
-                                <td>{{ $bonus->amount }}</td>
-                                <td>{{ $bonus->date }}</td>
-                                <td>{{ $bonus->created_at }}</td>
-                                <td>{{ $bonus->notes }}</td>
-                                <td>
-                                    <a href="{{ route('dashboard.hr.bonuses.show', $bonus->id) }}"
-                                        class="btn btn-primary btn-action" title="عرض">
-                                        <i class="fas fa-eye"></i>
-                                    </a>
-                                    <a href="{{ route('dashboard.hr.bonuses.edit', $bonus->id) }}"
-                                        class="btn btn-warning btn-action" title="تعديل">
-                                        <i class="fas fa-edit"></i>
-                                    </a>
-                                    <form action="{{ route('dashboard.hr.bonuses.destroy', $bonus->id) }}" method="POST"
-                                        style="display: inline-block;">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger btn-action" title="حذف">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
         </div>
     </div>
 @endsection
@@ -136,7 +137,7 @@
     <script>
         document.getElementById('resetBtn').addEventListener('click', function() {
             // Reset Process across clearing the input fields and select dropdowns
-            window.location.href = "{{ route('dashboard.hr.departments.index') }}";
+            window.location.href = "{{ route('dashboard.hr.bonuses.index') }}";
         });
     </script>
 @endpush

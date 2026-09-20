@@ -14,8 +14,23 @@ class HrBonusesController extends Controller
      */
     public function index()
     {
+        $request = request();
+        $query = HrBonus::query();
+        $employeeId = $request->query('employee_id');
+        $type = $request->query('type');
+        $amount = $request->query('amount');
+        if ($employeeId) {
+            $query->where('employee_id', $employeeId);
+        }
+        if ($type) {
+            $query->where('type', $type);
+        }
+        if ($amount) {
+            $query->where('amount', $amount);
+        }
         return view('dashboard.pages.hr.bonuses.index', [
-            'bonuses' => HrBonus::all(),
+            'bonuses' => $query->get(),
+            'employees' => $this->employeeOptions(),
         ]);
     }
 

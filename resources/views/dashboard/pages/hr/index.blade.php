@@ -24,7 +24,7 @@
                     <i class="fas fa-check-circle"></i>
                 </div>
                 <div class="stat-content">
-                    <div class="stat-number">96</div>
+                    <div class="stat-number">{{ $stats['active_departments'] }}</div>
                     <div class="stat-label">نشط</div>
                 </div>
             </div>
@@ -32,11 +32,11 @@
         <div class="col-lg-3 col-md-6 mb-3">
             <div class="stat-box">
                 <div class="stat-icon">
-                    <i class="fas fa-clock"></i>
+                    <i class="fas fa-times-circle"></i>
                 </div>
                 <div class="stat-content">
-                    <div class="stat-number">22</div>
-                    <div class="stat-label">قيد الانتظار</div>
+                    <div class="stat-number">{{ $stats['inactive_departments'] }}</div>
+                    <div class="stat-label">غير نشط</div>
                 </div>
             </div>
         </div>
@@ -46,8 +46,8 @@
                     <i class="fas fa-ban"></i>
                 </div>
                 <div class="stat-content">
-                    <div class="stat-number">10</div>
-                    <div class="stat-label">موقوف</div>
+                    <div class="stat-number">{{ $stats['employees_count'] }}</div>
+                    <div class="stat-label">عدد الموظفين</div>
                 </div>
             </div>
         </div>

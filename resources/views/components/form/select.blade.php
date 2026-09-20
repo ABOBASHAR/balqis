@@ -2,7 +2,8 @@
     'label',
     'name',
     'options' => [],
-    'selected',  
+    'selected',
+    'disabled' => [],
 ])
 <label for="{{ $name }}" class="form-label">{{ $label ?? '' }}</label>
 <select name="{{ $name }}" id="{{ $name }}" class="form-control mb-3 
@@ -13,7 +14,8 @@
         @foreach ($options as $value => $text)
             <option value="{{ $value }}" 
             {{ $value == old($name, $selected) ? 'selected' : '' }}
-            {{-- this (line 15) or that (line 17 --> 19</option>) both correct --}}
+            {{ !empty($disabled[$value]) ? 'disabled' : '' }}
+            {{-- this (line 16) or that (line 19 --> 21) both correct --}}
             {{-- @if ($value == old($name, $selected))
                 selected
             @endif --}}

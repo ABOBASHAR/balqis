@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Dashboard;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\HrDepartment;
+use App\Models\HrEmployee;
 
 class HrController extends Controller
 {
@@ -14,7 +15,10 @@ class HrController extends Controller
     {
         $stats = [
             'departments_count' => HrDepartment::count(),
-            // 'employees_count' => \App\Models\HrEmployee::count(),
+            'active_departments' => HrDepartment::where('status', 'active')->count(),
+            'inactive_departments' => HrDepartment::where('status', 'inactive')->count(),
+            'employees_count' => HrEmployee::count(),
+
         ];
         return view('dashboard.pages.hr.index',[
             'stats' => $stats,
