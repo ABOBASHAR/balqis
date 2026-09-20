@@ -8,6 +8,8 @@ use App\Models\HrDepartment;
 
 class HrController extends Controller
 {
+    // This controller is responsible for just handling the HR dashboard and statistics
+    // and nothing else, so we will just have an index method here to show the HR dashboard
     public function index()
     {
         $stats = [

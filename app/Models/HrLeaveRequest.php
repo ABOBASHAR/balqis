@@ -3,10 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class HrLeaveRequest extends Model
 {
-    protected $fillable = [
+protected $casts = [
+        'hire_date' => 'date',
+    ];    
+protected $fillable = [
         'employee_id',
         'type',
         'status',
@@ -21,5 +25,11 @@ class HrLeaveRequest extends Model
     public function employee()
     {
         return $this->belongsTo(HrEmployee::class);
+    }
+    public static function calculateDays(string $startDate, string $endDate): int
+    {
+        $start = Carbon::parse($startDate)->startOfDay();
+        $end = Carbon::parse($endDate)->startOfDay();
+        return $start->diffInDays($end) + 1; // +1 to include the start date
     }
 }

@@ -9,6 +9,8 @@ use App\Http\Controllers\Dashboard\StoreController;
 use App\Http\Controllers\Dashboard\TwoFactorAuthenticatableController;
 use Illuminate\Support\Facades\Route;
 use \App\Http\Controllers\Dashboard\HrEmployeesController;
+use \App\Http\Controllers\Dashboard\HrLeaveRequestController;
+use \App\Http\Controllers\Dashboard\Hr\HrBonusesController;
 
 Route::group([
     'prefix' => '/admin/dashboard',
@@ -39,5 +41,9 @@ Route::group([
         Route::get('/', [HrController::class, 'index'])->name('index');
         Route::resource('departments', HrDepartmentsController::class);
         Route::resource('employees', HrEmployeesController::class);
+        Route::resource('leaves', HrLeaveRequestController::class)->parameters(['leaves' => 'leave']);
+        Route::post('leaves/{leave}/approve', [HrLeaveRequestController::class, 'approve'])->name('leaves.approve');
+        Route::post('leaves/{leave}/reject', [HrLeaveRequestController::class, 'reject'])->name('leaves.reject');
+        Route::resource('bonuses', HrBonusesController::class);
     });
 });

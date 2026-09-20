@@ -152,7 +152,6 @@
                     }
                 }
             });
-        });
     </script>
     <script>
         document.getElementById('resetBtn').addEventListener('click', function() {
