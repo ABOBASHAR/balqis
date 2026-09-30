@@ -1,6 +1,6 @@
 @extends('layouts.dashboard.index')
 
-@section('title','الموارد البشرية - تعديل طلب مكافأة')
+@section('title','الموارد البشرية - إنشاء خصم')
 
 @section('content')
     @if ($errors->any())
@@ -15,16 +15,16 @@
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">
-                <i class="fas fa-edit ml-2"></i>
-                تعديل طلب مكافأة
+                <i class="fas fa-plus ml-2"></i>
+                إنشاء خصم جديد
             </h3>
         </div>
         <div class="card-body">
-            <form action="{{ route('dashboard.hr.bonuses.update', $bonus->id) }}" method="POST">
+            <form action="{{ route('dashboard.hr.deductions.store') }}" method="POST">
                 @csrf
-                @method('PUT')
-                @include('dashboard.pages.hr.bonuses._form')
-                <button type="submit" class="btn btn-primary">حفظ طلب المكافأة</button>
+                @method('POST')
+                @include('dashboard.pages.hr.deductions._form')
+                <button type="submit" class="btn btn-primary">حفظ الخصم</button>
             </form>
         </div>
     </div>

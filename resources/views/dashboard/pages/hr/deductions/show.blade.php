@@ -1,22 +1,24 @@
 @php
-    $BonusTypeLabels = [
-        'performance' => 'مكافأة أداء',
-        'overtime' => 'مكافأة ساعات إضافية',
-        'holiday' => 'مكافأة عطلة',
-        'commission' => 'مكافأة عمولة',
-        'other' => 'مكافأة أخرى',
+    $deductionTypeLabels = [
+        '' => 'الكل',
+        'late' => 'خصم تأخير',
+        'absent' => 'خصم غياب',
+        'loan' => 'خصم قرض',
+        'penalty' => 'خصم مخالفات',
+        'tax' => 'خصم ضريبة',
+        'other' => 'خصم آخر',
     ];
 @endphp
 @extends('layouts.dashboard.index')
 
-@section('title', 'الموارد البشرية - تفاصيل طلب المكافأة')
+@section('title', 'الموارد البشرية - تفاصيل الخصم')
 
 @section('content')
     <div class="card">
         <div class="card-header">
             <h3 class="card-title">
                 <i class="fas fa-list-alt ml-2"></i>
-                تفاصيل طلب المكافأة
+                تفاصيل الخصم
             </h3>
         </div>
         <div class="card-body">
@@ -27,35 +29,35 @@
                 </colgroup>
                 <tr>
                     <th>رقم الطلب</th>
-                    <td>{{ $bonus->id }}</td>
+                    <td>{{ $deduction->id }}</td>
                 </tr>
                 <tr>
                     <th>اسم الموظف</th>
-                    <td>{{ $bonus->employee->name ?? '-' }}</td>
+                    <td>{{ $deduction->employee->name ?? '-' }}</td>
                 </tr>
                 <tr>
-                    <th>عنوان المكافأة</th>
-                    <td>{{ $bonus->title ?? '-' }}</td>
+                    <th>عنوان الخصم</th>
+                    <td>{{ $deduction->title ?? '-' }}</td>
                 </tr>
                 <tr>
-                    <th> نوع المكافأة</th>
-                    <td>{{ $BonusTypeLabels[$bonus->type] ?? '-' }}</td>
+                    <th> نوع الخصم</th>
+                    <td>{{ $deductionTypeLabels[$deduction->type] ?? '-' }}</td>
                 </tr>
                 <tr>
-                    <th> مبلغ المكافأة</th>
-                    <td>{{ $bonus->amount ?? '-' }}</td>
+                    <th> مبلغ الخصم</th>
+                    <td>{{ $deduction->amount ?? '-' }}</td>
                 </tr>
                 <tr>
                     <th> تاريخ الطلب</th>
-                    <td>{{ $bonus->created_at }}</td>
+                    <td>{{ $deduction->created_at }}</td>
                 </tr>
                 <tr>
                     <th> ملاحظات</th>
-                    <td>{{ $bonus->notes ?? '-' }}</td>
+                    <td>{{ $deduction->notes ?? '-' }}</td>
                 </tr>
                 <tr>
                     <td colspan="2" class="text-center">
-                        <a href="{{ route('dashboard.hr.bonuses.index') }}" class="btn btn-primary">
+                        <a href="{{ route('dashboard.hr.deductions.index') }}" class="btn btn-primary">
                             الرجوع <i class="fas fa-undo"></i>
                         </a>
                     </td>
