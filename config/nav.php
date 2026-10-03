@@ -23,7 +23,7 @@ return [
     ],
     [
         'title' => 'التحقق بخطوتين',
-        'icon' => 'nav-icon fas fa-lock',
+        'icon' => 'nav-icon fas fa-shield-alt',
         'route' => 'dashboard.admin.2fa',
     ],
     [
