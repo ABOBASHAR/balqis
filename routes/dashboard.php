@@ -12,6 +12,7 @@ use \App\Http\Controllers\Dashboard\HrEmployeesController;
 use \App\Http\Controllers\Dashboard\HrLeaveRequestController;
 use \App\Http\Controllers\Dashboard\Hr\HrBonusesController;
 use \App\Http\Controllers\Dashboard\Hr\HrDeductionsController;
+use \App\Http\Controllers\Dashboard\Hr\HrPayrollsController;
 
 Route::group([
     'prefix' => '/admin/dashboard',
@@ -47,5 +48,6 @@ Route::group([
         Route::post('leaves/{leave}/reject', [HrLeaveRequestController::class, 'reject'])->name('leaves.reject');
         Route::resource('bonuses', HrBonusesController::class);
         Route::resource('deductions', HrDeductionsController::class);
+        Route::resource('payrolls', HrPayrollsController::class);
     });
 });

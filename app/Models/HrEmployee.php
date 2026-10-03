@@ -28,12 +28,14 @@ class HrEmployee extends Model
     {
         return $this->belongsTo(HrDepartment::class);
     }
+
     public function bonuses()
     {
-        return $this->hasMany(HrBonus::class);
+        return $this->hasMany(HrBonus::class, 'employee_id');
     }
+
     public function deductions()
     {
-        return $this->hasMany(HrDeduction::class);
+        return $this->hasMany(HrDeduction::class, 'employee_id');
     }
 }

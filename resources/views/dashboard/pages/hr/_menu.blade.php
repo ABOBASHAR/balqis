@@ -8,4 +8,5 @@
     <a href="{{ route('dashboard.hr.leaves.index') }}" class="btn {{ $current === 'leaves' ? 'btn-primary' : 'btn-outline-primary' }}">طلبات الإجازة</a>
     <a href="{{ route('dashboard.hr.bonuses.index') }}" class="btn {{ $current === 'bonuses' ? 'btn-primary' : 'btn-outline-primary' }}">المكافآت</a>
     <a href="{{ route('dashboard.hr.deductions.index') }}" class="btn {{ $current === 'deductions' ? 'btn-primary' : 'btn-outline-primary' }}">الخصومات</a>
+    <a href="{{ route('dashboard.hr.payrolls.index') }}" class="btn {{ $current === 'payrolls' ? 'btn-primary' : 'btn-outline-primary' }}">الرواتب</a>
 </div>
